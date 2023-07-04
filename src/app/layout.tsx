@@ -25,7 +25,7 @@ export default function RootLayout({
           "bg-white dark:bg-gray-950 dark:text-slate-100"
         )}
       >
-        <nav className="h-14 bg-white/50 backdrop-blur-md px-10 sticky top-0 flex items-center justify-between dark:bg-gray-950/50">
+        <nav className="h-14 bg-white/50 backdrop-blur-md px-10 z-20 sticky top-0 flex items-center justify-between dark:bg-gray-950/50">
           <Link href={"/"}>ClassEcho</Link>
           <div className="flex items-center gap-5">
             <Link

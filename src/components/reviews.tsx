@@ -21,7 +21,7 @@ const Reviews: FC<ReviewsProps> = ({
   image,
 }: ReviewsProps) => {
   return (
-    <Card className="w-[350px]">
+    <Card className="w-full h-56">
       <CardHeader>
         <Avatar>
           <AvatarImage src={image} alt="@shadcn" />

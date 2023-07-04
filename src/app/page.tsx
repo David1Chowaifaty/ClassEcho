@@ -5,8 +5,8 @@ import Link from "next/link";
 
 export default async function Home() {
   return (
-    <main className="px-10 space-y-5 text-center md:text-left lg:space-y-10">
-      <section className="items-center flex flex-col lg:flex-row-reverse lg:py-[10vh] lg:h-fit lg:justify-around ">
+    <main className="px-10  text-center lg:text-left lg:space-y-10">
+      <section className="items-center flex flex-col lg:flex-row-reverse lg:py-[5vh] lg:h-fit lg:justify-around ">
         <Image
           alt="Home image"
           src={
@@ -71,7 +71,7 @@ export default async function Home() {
             alt="createClasses"
             height={1000}
             width={1000}
-            className="lg:h-[50vh] lg:w-[40vw] rounded-tr-2xl rounded-lg"
+            className="lg:h-[50vh] lg:w-[35vw] rounded-lg"
           />
         </div>
       </section>
