@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --radial-color: rgba(
+    255,
+    255,
+    255,
+    0.06
+  ); /* Default value for --radial-color */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --radial-color: rgba(56, 96, 255, 0.06);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --radial-color: rgba(180, 195, 252, 0.06);
+  }
+}
+
+#card {
+  position: relative;
+  background: rgb(255, 255, 255, 0.02);
+}
+#card::before {
+  border-radius: inherit;
+
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y),
+    var(--radial-color),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 500ms;
+}
+#card:hover::before {
+  opacity: 1;
+}

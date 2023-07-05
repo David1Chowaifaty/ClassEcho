@@ -23,11 +23,14 @@ export default function AddMaterial({ course_id }: AddMaterialProps) {
   const [description, setDescription] = useState("");
   const router = useRouter();
   async function handleAddMaterial() {
-    const { data } = await axios.post("http://localhost:5080/api/addMaterial", {
-      course_id,
-      title,
-      description,
-    });
+    const { data } = await axios.post(
+      "https://classechoapi.onrender.com/api/addMaterial",
+      {
+        course_id,
+        title,
+        description,
+      }
+    );
     setTitle("");
     setDescription("");
     router.refresh();
