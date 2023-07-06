@@ -4,8 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -15,25 +13,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "./ui/alert-dialog";
-import { Button, buttonVariants } from "@/components/ui/button";
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { DotsVerticalIcon, TrashIcon } from "@radix-ui/react-icons";
 import { toast } from "react-hot-toast";
+import CustomAlert from "./custom-alert";
 type student = {
   email: string;
   profile: string | null;
@@ -135,39 +120,17 @@ export default function CourseOptions({
                       className="py-3 w-full border-b flex items-center justify-between"
                     >
                       <p>{student.email}</p>
-                      <AlertDialog>
-                        <AlertDialogTrigger className="p-1.5 rounded-md hover:bg-slate-100/50 dark:hover:bg-slate-900">
-                          <TrashIcon className="text-red-900 dark:text-red-500" />
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>
-                              Are you absolutely sure?
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              This action cannot be undone. This will
-                              permanently delete your account and remove your
-                              data from our servers.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                              className={buttonVariants({
-                                variant: "destructive",
-                              })}
-                              onClick={() =>
-                                deleteStudent(
-                                  student.enrollment_id,
-                                  student.email
-                                )
-                              }
-                            >
-                              Continue
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      {admin && (
+                        <CustomAlert
+                          handleClick={() =>
+                            deleteStudent(student.enrollment_id, student.email)
+                          }
+                          triggerContent={
+                            <TrashIcon className="text-red-900 dark:text-red-500" />
+                          }
+                          className="p-1.5 rounded-md hover:bg-slate-100/50 dark:hover:bg-slate-900"
+                        />
+                      )}
                     </div>
                   ))
                 )}
@@ -177,64 +140,22 @@ export default function CourseOptions({
         </DropdownMenuItem>
         {admin ? (
           <DropdownMenuItem asChild>
-            <AlertDialog>
-              <AlertDialogTrigger
-                className={
-                  "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-slate-100 hover:text-slate-900 focus:bg-slate-100 focus:text-slate-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:hover:bg-slate-800 dark:hover:text-slate-50  dark:focus:bg-slate-800 dark:focus:text-slate-50 w-full"
-                }
-              >
-                Delete Course
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    className={buttonVariants({ variant: "destructive" })}
-                    onClick={deleteCourse}
-                  >
-                    Continue
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </DropdownMenuItem>
-        ) : (
-          <AlertDialog>
-            <AlertDialogTrigger
+            <CustomAlert
+              handleClick={deleteCourse}
               className={
                 "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-slate-100 hover:text-slate-900 focus:bg-slate-100 focus:text-slate-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:hover:bg-slate-800 dark:hover:text-slate-50  dark:focus:bg-slate-800 dark:focus:text-slate-50 w-full"
               }
-            >
-              Leave Course
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  className={buttonVariants({
-                    variant: "destructive",
-                  })}
-                  onClick={leaveCourse}
-                >
-                  Continue
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+              triggerContent={<>Leave Course</>}
+            />
+          </DropdownMenuItem>
+        ) : (
+          <CustomAlert
+            handleClick={leaveCourse}
+            className={
+              "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-slate-100 hover:text-slate-900 focus:bg-slate-100 focus:text-slate-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:hover:bg-slate-800 dark:hover:text-slate-50  dark:focus:bg-slate-800 dark:focus:text-slate-50 w-full"
+            }
+            triggerContent={<>Leave Course</>}
+          />
         )}
       </DropdownMenuContent>
     </DropdownMenu>
