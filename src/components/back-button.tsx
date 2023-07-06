@@ -1,9 +1,8 @@
-"use client";
-import { useRouter } from "next/navigation";
 import React from "react";
-import { Button } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export default function BackButton({
   classname,
@@ -12,12 +11,11 @@ export default function BackButton({
   title: string;
   classname?: string;
 }) {
-  const router = useRouter();
   return (
     <div className={cn(classname, "flex items-center gap-5")}>
-      <Button variant={"ghost"} onClick={() => router.back()}>
+      <Link href="/" className={buttonVariants({ variant: "ghost" })}>
         <ArrowLeftIcon />
-      </Button>
+      </Link>
       <p>{title}</p>
     </div>
   );

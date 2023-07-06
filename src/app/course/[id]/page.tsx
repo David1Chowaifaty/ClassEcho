@@ -13,6 +13,8 @@ import BackButton from "@/components/back-button";
 import AddMaterial from "@/components/add-material";
 import ClipboardButton from "@/components/clipboard-button";
 import { getServerSession } from "next-auth";
+import { cn } from "@/lib/utils";
+import CourseOptions from "@/components/course-options";
 
 interface PageProps {
   params: { id: string };
@@ -28,17 +30,43 @@ type Course = {
   title: string;
   material_description: string;
 };
-
+//purple green lime
 const page: FC<PageProps> = async ({ params }) => {
   const url = `https://classechoapi.onrender.com/api/getSingleCourse/${params.id}`;
   const { data }: { data: Course[] } = await axios.get(url);
+  const ligthColor = ["from-purple-200", "from-green-200", "from-violet-200"];
+  const darkColor = [
+    "dark:from-blue-950",
+    "dark:from-purple-950",
+    "dark:from-cyan-950",
+    "dark:from-sky-950",
+    "dark:from-violet-950",
+    "dark:from-teal-950",
+  ];
   const session = await getServerSession();
+  const rand = Math.floor(Math.random() * ligthColor.length);
+
   return (
-    <main className="px-10">
+    <main className="px-4 min-h-[80vh] sm:px-6 lg:px-10">
       <BackButton title={"Courses"} />
-      <Card className="mt-5 bg-slate-50 dark:bg-slate-800/60">
+      <Card
+        className={cn(
+          "mt-5 bg-gradient-to-tr relative  to-white dark:bg-gradient-to-tr  dark:to-slate-950",
+          ligthColor[rand],
+          darkColor[Math.floor(Math.random() * darkColor.length)]
+        )}
+      >
         <CardHeader>
-          <CardTitle>{data[0].course_name}</CardTitle>
+          <CardTitle className="flex items-center justify-between">
+            <p>{data[0].course_name}</p>
+            <CourseOptions
+              id={session?.user.name!}
+              course_code={data[0].course_code || ""}
+              admin={
+                session?.user.name?.toString() === data[0].creator.toString()
+              }
+            />
+          </CardTitle>
           {data[0].course_code && (
             <CardDescription className="flex items-center gap-4">
               <ClipboardButton code={data[0].course_code} />

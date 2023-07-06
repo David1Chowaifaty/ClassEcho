@@ -15,7 +15,7 @@ interface CourseCardProps {
 const CourseCard: FC<CourseCardProps> = ({ description, name }) => {
   return (
     <Card
-      className="h-48  before:absolute before:top-0 before:left-0 before:h-full before:w-full before:z-50"
+      className="h-48 w-full before:absolute before:top-0 before:left-0 before:h-full before:w-full before:z-50"
       id="card"
       onMouseMove={(e) => {
         const { currentTarget: traget } = e;
@@ -30,7 +30,9 @@ const CourseCard: FC<CourseCardProps> = ({ description, name }) => {
         <CardTitle>{name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <CardDescription>{description}</CardDescription>
+        <CardDescription>
+          <p className="truncate max-w-xs">{description}</p>
+        </CardDescription>
       </CardContent>
     </Card>
   );

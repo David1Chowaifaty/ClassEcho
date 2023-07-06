@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default async function Home() {
   return (
-    <main className="px-10  text-center lg:text-left lg:space-y-10">
+    <main className="px-4 sm:px-6 lg:px-10 text-center space-y-5 lg:text-left lg:space-y-10">
       <section className="items-center flex flex-col lg:flex-row-reverse lg:py-[5vh] lg:h-fit lg:justify-around ">
         <Image
           alt="Home image"
@@ -18,10 +18,10 @@ export default async function Home() {
         />
 
         <div className="max-w-lg">
-          <h1 className="text-2xl font-bold mb-4 lg:text-4xl lg:mb-8">
+          <h1 className="text-2xl font-bold mb-10 lg:text-4xl lg:mb-8">
             Empowerment Unleashed. Ignite Curiosity.
           </h1>
-          <p className="text-sm mb-3 md:text-base lg:mb-6">
+          <p className="text-sm mb-8 md:text-base lg:mb-6">
             Discover an exciting world of knowledge with ClassEcho. Tap into
             endless possibilities to learn, teach, and inspire others in our
             thriving community. Together, we’re redefining education for the
@@ -38,10 +38,10 @@ export default async function Home() {
       <section className="min-h-screen py-10 space-y-10 ">
         <div className="flex flex-col-reverse gap-8 items-center lg:flex-row-reverse lg:py-[10vh] lg:h-fit lg:justify-around ">
           <div className="max-w-lg">
-            <h2 className="text-2xl font-semibold mb-4 lg:text-3xl lg:mb-8">
+            <h2 className="text-2xl font-semibold mb-8 lg:text-3xl lg:mb-8">
               Create Courses and Fuel the Growing Community
             </h2>
-            <p className="text-sm mb-3 md:text-base lg:mb-6">
+            <p className="text-sm mb-6 md:text-base lg:mb-6">
               Unleash the potential in you and others by creating engaging
               courses. Encourage the curious and passionate minds that make
               ClassEcho a thriving community.
@@ -57,10 +57,10 @@ export default async function Home() {
         </div>
         <div className="flex items-center gap-8 flex-col-reverse lg:flex-row lg:py-[10vh] lg:h-fit lg:justify-around ">
           <div className="max-w-lg">
-            <h2 className="text-2xl font-semibold mb-4 lg:text-3xl lg:mb-8">
+            <h2 className="text-2xl font-semibold mb-8 lg:text-3xl lg:mb-8">
               Learn, Teach, and Inspire with Cutting-Edge Tools
             </h2>
-            <p className="text-sm mb-3 md:text-base lg:mb-6">
+            <p className="text-sm mb-6 md:text-base lg:mb-6">
               ClassEcho offers an interactive platform for seamless learning and
               teaching experiences. Elevate the knowledge quest with tools
               tailored to your needs.
@@ -115,7 +115,6 @@ export default async function Home() {
           </Link>
         </div>
       </section>
-      <h3 className="text-sm text-center py-5">@2023 ClassEcho</h3>
     </main>
   );
 }

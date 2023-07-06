@@ -33,7 +33,7 @@ export default async function RootLayout({
         )}
       >
         <Provider session={session}>
-          <nav className="h-14 bg-white/50 backdrop-blur-md px-10 z-20 sticky top-0 flex items-center justify-between dark:bg-gray-950/50">
+          <nav className="h-16 sm:px-6 bg-white/50 backdrop-blur-md px-4 lg:px-10 z-30 sticky top-0 flex items-center justify-between dark:bg-gray-950/50">
             <Link href={"/"}>ClassEcho</Link>
             {!session ? (
               <div className="flex items-center gap-5">
@@ -58,6 +58,9 @@ export default async function RootLayout({
             )}
           </nav>
           {children}
+          <footer>
+            <h3 className="text-sm text-center py-5">@2023 ClassEcho</h3>
+          </footer>
         </Provider>
       </body>
     </html>

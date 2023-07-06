@@ -12,13 +12,22 @@ import {
 
 export default function SignOut() {
   return (
-    <Button
-      aria-label="signout"
-      variant={"ghost"}
-      size={"icon"}
-      onClick={() => signOut()}
-    >
-      <ExitIcon />
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <Button
+            aria-label="signout"
+            variant={"ghost"}
+            size={"icon"}
+            onClick={() => signOut()}
+          >
+            <ExitIcon />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Sign out</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
