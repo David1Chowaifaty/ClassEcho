@@ -44,29 +44,26 @@ export default function CreateCourseButton({
           <DialogTitle>Course</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Input
-              id="name"
-              value={name}
-              placeholder="Course name"
-              className="col-span-3"
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Textarea
-              placeholder="Course description"
-              id="username"
-              value={description}
-              className="col-span-3"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+        <div className="grid gap-4 py-4 w-full">
+          <Input
+            id="name"
+            value={name}
+            placeholder="Course name"
+            className="col-span-4"
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <Textarea
+            placeholder="Course description"
+            id="username"
+            value={description}
+            className="col-span-4"
+            onChange={(e) => setDescription(e.target.value)}
+          />
         </div>
         <DialogFooter>
           <DialogTrigger asChild>
-            <Button type="submit" onClick={() => addCourse()}>
+            <Button type="submit" onClick={addCourse}>
               Save changes
             </Button>
           </DialogTrigger>

@@ -13,7 +13,7 @@ import { Input } from "./ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { cn } from "@/lib/utils";
 export default function JoinCourse({
   id,
@@ -47,7 +47,7 @@ export default function JoinCourse({
           id="name"
           value={code}
           placeholder="Course code"
-          className="col-span-3"
+          className=""
           onPaste={(event) => {
             event.preventDefault();
             const pastedData = event.clipboardData.getData("text/plain");
@@ -56,10 +56,11 @@ export default function JoinCourse({
           onChange={(e) => setCode(e.target.value)}
         />
         <DialogFooter>
-          <DialogTrigger asChild>
-            <Button type="submit" onClick={() => joinCourse()}>
-              Save changes
-            </Button>
+          <DialogTrigger
+            onClick={joinCourse}
+            className={cn(buttonVariants({ variant: "default" }))}
+          >
+            Save changes
           </DialogTrigger>
         </DialogFooter>
       </DialogContent>

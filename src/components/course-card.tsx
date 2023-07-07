@@ -27,11 +27,13 @@ const CourseCard: FC<CourseCardProps> = ({ description, name }) => {
       }}
     >
       <CardHeader>
-        <CardTitle>{name}</CardTitle>
+        <CardTitle>
+          <p>{name}</p>
+        </CardTitle>
       </CardHeader>
       <CardContent>
-        <CardDescription>
-          <p className="truncate max-w-xs">{description}</p>
+        <CardDescription className="max-w-xs truncate">
+          {description}
         </CardDescription>
       </CardContent>
     </Card>
