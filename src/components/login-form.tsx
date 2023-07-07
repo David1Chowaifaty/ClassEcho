@@ -3,7 +3,7 @@ import { Input } from "./ui/input";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { signIn } from "next-auth/react";
-import { cn } from "@/lib/utils";
+import { cn, validateEmail, validatePassword } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
@@ -12,25 +12,26 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
+  const [isError, setError] = useState(false);
   const params = useSearchParams();
   const error = params?.get("error");
   useEffect(() => {
-    switch (error) {
-      case "Email doesn't exist":
-        setEmailError(true);
-        break;
-      case "Invalid Password":
-        setPasswordError(true);
-        break;
+    if (error) {
+      setError(true);
     }
   }, [error]);
   async function handleSignIn(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     e.preventDefault();
+    setError(false);
     setIsLoading(true);
+    if (password === "" || email === "") {
+      return setError(true);
+    }
+    if (!validateEmail(email) || !validatePassword(password)) {
+      return setError(true);
+    }
     try {
       const res = await signIn("credentials", { email, password }).catch((e) =>
         console.log(e)
@@ -43,7 +44,7 @@ export default function LoginForm() {
   }
   return (
     <>
-      {error && (
+      {isError && (
         <Alert variant="destructive" className="max-w-lg">
           <ExclamationTriangleIcon className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
@@ -54,23 +55,17 @@ export default function LoginForm() {
       )}
 
       <Input
+        onFocus={() => setError(false)}
         placeholder="Email"
-        onFocus={() => setEmailError(false)}
-        className={cn(
-          "max-w-lg",
-          emailError && "border-red-500/50  dark:border-red-500"
-        )}
+        className={cn("max-w-lg")}
         value={email}
         onChange={(e) => {
           setEmail(e.target.value);
         }}
       />
       <Input
-        onFocus={() => setPasswordError(false)}
-        className={cn(
-          "max-w-lg",
-          passwordError && "border-red-500/50 dark:border-red-500"
-        )}
+        onFocus={() => setError(false)}
+        className={cn("max-w-lg")}
         type="password"
         placeholder="Password"
         value={password}
