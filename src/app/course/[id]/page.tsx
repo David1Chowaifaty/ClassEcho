@@ -93,7 +93,17 @@ const page: FC<PageProps> = async ({ params }) => {
           {data.map((material) => (
             <Card className="mt-5" key={material.material_id}>
               <CardHeader>
-                <CardTitle>{material.title}</CardTitle>
+                <CardTitle className="flex items-center justify-between">
+                  <p>{material.title}</p>
+                  <CourseOptions
+                    id={session?.user.name!}
+                    course_code={data[0].course_code || ""}
+                    admin={
+                      session?.user.name?.toString() ===
+                      data[0].creator.toString()
+                    }
+                  />
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <CardDescription className="flex justify-between items-center">

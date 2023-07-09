@@ -62,7 +62,7 @@ export default async function RootLayout({
             <h3 className="text-sm text-center py-5">@2023 ClassEcho</h3>
           </footer>
         </Provider>
-        <Analytics />
+        {/* <Analytics /> */}
       </body>
     </html>
   );

@@ -10,6 +10,6 @@ export function validateEmail(email: string): boolean {
 }
 export function validatePassword(password: string): boolean {
   const passwordRegex: RegExp =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%.*?&])[a-z\d@$.!%*?&]{8,}$/;
   return passwordRegex.test(password);
 }
