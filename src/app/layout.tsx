@@ -6,6 +6,7 @@ import AddCourse from "@/components/add-course";
 import { buttonVariants } from "@/components/ui/button";
 import Provider from "@/components/Provider";
 import { getServerSession } from "next-auth";
+import { Analytics } from "@vercel/analytics/react";
 import SignOut from "@/components/SignOut";
 const inter = Inter({ subsets: ["latin"] });
 import { ModeToggle } from "@/components/theme-toggle";
@@ -59,7 +60,7 @@ export default async function RootLayout({
             <h3 className="text-sm text-center py-5">@2023 ClassEcho</h3>
           </footer>
         </Provider>
-        {/* <Analytics /> */}
+        <Analytics />
       </body>
     </html>
   );
