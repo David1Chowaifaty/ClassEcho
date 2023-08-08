@@ -31,7 +31,7 @@ export default function CreateCourseButton({
       {
         name,
         description,
-        id,
+        id: id.toString(),
       }
     );
     router.refresh();

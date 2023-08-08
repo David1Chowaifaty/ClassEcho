@@ -30,7 +30,7 @@ export default function JoinCourse({
       "https://classechoapi.onrender.com/api/course/joinCourse",
       {
         code,
-        id,
+        id: id.toString(),
       }
     );
     router.refresh();
