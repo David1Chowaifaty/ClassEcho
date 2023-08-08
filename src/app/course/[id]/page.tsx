@@ -29,6 +29,7 @@ export async function generateStaticParams() {
   );
   return data.map((course: any) => ({ id: course.toString() }));
 }
+export const revalidate = 3600;
 const CoursePage: FC<CoursePageProps> = async ({ params }) => {
   const url = `https://classechoapi.onrender.com/api/course/getSingleCourse/${params.id}`;
   const { data }: { data: Course[] } = await axios.get(url);

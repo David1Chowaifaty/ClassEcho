@@ -27,6 +27,7 @@ export async function generateStaticParams() {
   const result = data as number[];
   return result.map((res) => ({ id: res.toString() }));
 }
+export const revalidate = 3600;
 
 const page: FC<PageProps> = async ({ params, searchParams }) => {
   const page = searchParams["page"] ?? "1";
