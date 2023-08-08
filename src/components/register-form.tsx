@@ -46,7 +46,7 @@ export default function RegisterForm() {
       }
 
       const { data } = await axios.post(
-        "https://classechoapi.onrender.com/api/register",
+        "https://classechoapi.onrender.com/api/auth/register",
         {
           email,
           password,

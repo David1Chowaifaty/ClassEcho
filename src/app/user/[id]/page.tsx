@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, Suspense } from "react";
 import axios from "axios";
 import Link from "next/link";
 import CourseCard from "@/components/course-card";
@@ -6,8 +6,12 @@ import CreateCourseButton from "@/components/create-course";
 import { getServerSession } from "next-auth";
 import JoinCourse from "@/components/join-course";
 import { buttonVariants } from "@/components/ui/button";
+import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons";
+import UserLoading from "@/components/user-loading";
+
 interface PageProps {
   params: { id: string };
+  searchParams: { [key: string]: string[] | string | undefined };
 }
 type Course = {
   course_id: number;
@@ -16,11 +20,33 @@ type Course = {
   course_name: string;
   description: string;
 };
+export async function generateStaticParams() {
+  const { data } = await axios.get(
+    "https://classechoapi.onrender.com/api/users/GetAllUsersId"
+  );
+  const result = data as number[];
+  return result.map((res) => ({ id: res.toString() }));
+}
 
-const page: FC<PageProps> = async ({ params }) => {
-  const url = `https://classechoapi.onrender.com/api/getCourses/${params.id}`;
+const page: FC<PageProps> = async ({ params, searchParams }) => {
+  const page = searchParams["page"] ?? "1";
+  const perpage = searchParams["perpage"] ?? "15";
+  const url = `https://classechoapi.onrender.com/api/course/getCourses/${params.id}`;
   const { data }: { data: Course[] } = await axios.get(url);
   const session = await getServerSession();
+  console.log("sessionid=>", session?.user.id);
+
+  // async function checkButton() {
+  //   try {
+  //     const { data } = await axios.get(
+  //       "http://localhost:5080/api/auth/testjwt"
+  //     );
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  // checkButton();
   return (
     <main className="p-4 min-h-[80vh] sm:px-6  pb-8  mt-5  lg:px-10 ">
       {data.length === 0 && (

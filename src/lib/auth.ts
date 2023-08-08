@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
         let email = credentials?.email;
         let password = credentials?.password;
         const { data } = await axios.post(
-          "https://classechoapi.onrender.com/api/login",
+          "https://classechoapi.onrender.com/api/auth/login",
           {
             email,
             password,
@@ -49,7 +49,7 @@ export const authOptions: NextAuthOptions = {
     },
     async jwt({ token, user }) {
       const { data } = await axios.post(
-        "https://classechoapi.onrender.com/api/jwtLogin",
+        "https://classechoapi.onrender.com/api/auth/jwtlogin",
         {
           email: token.email,
         }

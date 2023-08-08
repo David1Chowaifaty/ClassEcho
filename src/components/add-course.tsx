@@ -9,10 +9,13 @@ import {
 import { PlusIcon } from "@radix-ui/react-icons";
 import CreateCourseButton from "./create-course";
 import JoinCourse from "./join-course";
+import { buttonVariants } from "./ui/button";
 export default function AddCourse({ id }: { id: string }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger
+        className={buttonVariants({ variant: "ghost", size: "icon" })}
+      >
         <PlusIcon />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

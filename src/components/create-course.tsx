@@ -27,7 +27,7 @@ export default function CreateCourseButton({
   const router = useRouter();
   async function addCourse() {
     const { data } = await axios.post(
-      "https://classechoapi.onrender.com/api/addcourse",
+      "https://classechoapi.onrender.com/api/course/addcourse",
       {
         name,
         description,
