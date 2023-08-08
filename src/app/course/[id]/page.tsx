@@ -32,7 +32,7 @@ type Course = {
 };
 //purple green lime
 const page: FC<PageProps> = async ({ params }) => {
-  const url = `https://classechoapi.onrender.com/api/getSingleCourse/${params.id}`;
+  const url = `https://classechoapi.onrender.com/api/course/getSingleCourse/${params.id}`;
   const { data }: { data: Course[] } = await axios.get(url);
   const ligthColor = ["from-purple-200", "from-green-200", "from-violet-200"];
   const darkColor = [

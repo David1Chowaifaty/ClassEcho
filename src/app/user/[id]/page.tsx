@@ -18,7 +18,7 @@ type Course = {
 };
 
 const page: FC<PageProps> = async ({ params }) => {
-  const url = `https://classechoapi.onrender.com/api/getCourses/${params.id}`;
+  const url = `https://classechoapi.onrender.com/api/course/getCourses/${params.id}`;
   const { data }: { data: Course[] } = await axios.get(url);
   const session = await getServerSession();
   return (

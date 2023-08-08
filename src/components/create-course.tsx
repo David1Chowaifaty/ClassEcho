@@ -26,15 +26,17 @@ export default function CreateCourseButton({
   const [description, setDescription] = useState("");
   const router = useRouter();
   async function addCourse() {
-    const { data } = await axios.post(
-      "https://classechoapi.onrender.com/api/addcourse",
-      {
-        name,
-        description,
-        id,
-      }
-    );
-    router.refresh();
+    try {
+      const { data } = await axios.post(
+        "https://classechoapi.onrender.com/api/course/addcourse",
+        {
+          name,
+          description,
+          id: id.toString(),
+        }
+      );
+      router.refresh();
+    } catch (error) {}
   }
   return (
     <Dialog>
