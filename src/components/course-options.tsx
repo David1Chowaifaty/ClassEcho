@@ -37,16 +37,16 @@ export default function CourseOptions({
   const [students, setStudents] = useState<student[]>();
   const [open, setOpen] = useState(false);
   async function getEnrolledStudents() {
-    const url = `https://classechoapi.onrender.com/api/getEnrolledStudents/${course_code}`;
+    const url = `https://classechoapi.onrender.com/api/course/getEnrolledStudents/${course_code}`;
     const { data } = await axios.get(url);
     setStudents(data);
   }
   async function deleteCourse() {
     toast
       .promise(
-        axios.post("https://classechoapi.onrender.com/api/deleteCourse", {
-          course_code,
-        }),
+        axios.delete(
+          `https://classechoapi.onrender.com/api/course/deleteCourse/${course_code}`
+        ),
         {
           error: "Something went wrong",
           loading: "Loading",
@@ -61,11 +61,8 @@ export default function CourseOptions({
   async function deleteStudent(enrollment_id: number, email: string) {
     setOpen(false);
     toast.promise(
-      axios.post(
-        "https://classechoapi.onrender.com/api/removeEnrolledStudent",
-        {
-          enrollment_id,
-        }
+      axios.delete(
+        `https://classechoapi.onrender.com/api/course/removeEnrolledStudent/${enrollment_id}`
       ),
       {
         error: "Something went wrong",
@@ -78,7 +75,7 @@ export default function CourseOptions({
   async function leaveCourse() {
     toast
       .promise(
-        axios.post("https://classechoapi.onrender.com/api/leaveCourse", {
+        axios.post("https://classechoapi.onrender.com/api/course/leaveCourse", {
           id,
         }),
         {
