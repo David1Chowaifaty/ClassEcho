@@ -18,7 +18,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { DotsVerticalIcon, TrashIcon } from "@radix-ui/react-icons";
 import { toast } from "react-hot-toast";
-import CustomAlert from "./custom-alert";
+import CustomAlert from "../custom-alert";
 type student = {
   email: string;
   profile: string | null;

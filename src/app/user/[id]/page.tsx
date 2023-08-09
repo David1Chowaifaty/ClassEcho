@@ -1,10 +1,10 @@
 import { FC, Suspense } from "react";
 import axios from "axios";
 import Link from "next/link";
-import CourseCard from "@/components/course-card";
-import CreateCourseButton from "@/components/create-course";
+import CourseCard from "@/components/course/course-card";
+import CreateCourseButton from "@/components/course/create-course";
 import { getServerSession } from "next-auth";
-import JoinCourse from "@/components/join-course";
+import JoinCourse from "@/components/course/join-course";
 import { buttonVariants } from "@/components/ui/button";
 import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons";
 import UserLoading from "@/components/user-loading";
@@ -20,14 +20,14 @@ type Course = {
   course_name: string;
   description: string;
 };
-export async function generateStaticParams() {
-  const { data } = await axios.get(
-    "https://classechoapi.onrender.com/api/users/GetAllUsersId"
-  );
-  const result = data as number[];
-  return result.map((res) => ({ id: res.toString() }));
-}
-export const revalidate = 3600;
+// export async function generateStaticParams() {
+//   const { data } = await axios.get(
+//     "https://classechoapi.onrender.com/api/users/GetAllUsersId"
+//   );
+//   const result = data as number[];
+//   return result.map((res) => ({ id: res.toString() }));
+// }
+// export const revalidate = 3600;
 
 const page: FC<PageProps> = async ({ params, searchParams }) => {
   const page = searchParams["page"] ?? "1";

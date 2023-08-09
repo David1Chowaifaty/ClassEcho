@@ -1,11 +1,11 @@
 "use client";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import React, { useEffect, useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { signIn } from "next-auth/react";
 import { cn, validateEmail, validatePassword } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 type FormError = {
   email?: string;

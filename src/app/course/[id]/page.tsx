@@ -3,11 +3,11 @@ import axios from "axios";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import BackButton from "@/components/back-button";
-import AddMaterial from "@/components/add-material";
-import ClipboardButton from "@/components/clipboard-button";
+import AddMaterial from "@/components/course/add-material";
+import ClipboardButton from "@/components/course/clipboard-button";
 import { getServerSession } from "next-auth";
 import { cn } from "@/lib/utils";
-import CourseOptions from "@/components/course-options";
+import CourseOptions from "@/components/course/course-options";
 
 interface CoursePageProps {
   params: { id: string };
@@ -23,13 +23,13 @@ type Course = {
   title: string;
   material_description: string;
 };
-export async function generateStaticParams() {
-  const { data } = await axios.get(
-    "https://classechoapi.onrender.com/api/course/getAllCoursesId"
-  );
-  return data.map((course: any) => ({ id: course.toString() }));
-}
-export const revalidate = 3600;
+// export async function generateStaticParams() {
+//   const { data } = await axios.get(
+//     "https://classechoapi.onrender.com/api/course/getAllCoursesId"
+//   );
+//   return data.map((course: any) => ({ id: course.toString() }));
+// }
+// export const revalidate = 3600;
 const CoursePage: FC<CoursePageProps> = async ({ params }) => {
   const url = `https://classechoapi.onrender.com/api/course/getSingleCourse/${params.id}`;
   const { data }: { data: Course[] } = await axios.get(url);

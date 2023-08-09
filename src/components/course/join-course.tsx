@@ -9,11 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { Textarea } from "./ui/textarea";
-import { Button, buttonVariants } from "./ui/button";
+import { Textarea } from "../ui/textarea";
+import { Button, buttonVariants } from "../ui/button";
 import { cn } from "@/lib/utils";
 export default function JoinCourse({
   id,
