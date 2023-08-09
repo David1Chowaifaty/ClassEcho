@@ -17,6 +17,7 @@ export default function AddCourse({ id }: { id: string }) {
         className={buttonVariants({ variant: "ghost", size: "icon" })}
       >
         <PlusIcon />
+        <p className="sr-only">add course</p>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
