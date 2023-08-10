@@ -30,9 +30,17 @@ export async function generateStaticParams() {
   return data.map((course: any) => ({ id: course.toString() }));
 }
 export const revalidate = 3600;
+async function getCourse(id: string) {
+  try {
+    const url = `https://classechoapi.onrender.com/api/course/getSingleCourse/${id}`;
+    const { data }: { data: Course[] } = await axios.get(url);
+    return data;
+  } catch (error) {
+    throw new Error("Something went wrong");
+  }
+}
 const CoursePage: FC<CoursePageProps> = async ({ params }) => {
-  const url = `https://classechoapi.onrender.com/api/course/getSingleCourse/${params.id}`;
-  const { data }: { data: Course[] } = await axios.get(url);
+  const data = await getCourse(params.id);
   const ligthColor = ["from-purple-200", "from-green-200", "from-violet-200"];
   const darkColor = [
     "dark:from-blue-950",

@@ -28,12 +28,19 @@ export async function generateStaticParams() {
   return result.map((res) => ({ id: res.toString() }));
 }
 export const revalidate = 3600;
-
+async function getCourses(id: string) {
+  try {
+    const url = `https://classechoapi.onrender.com/api/course/getCourses/${id}`;
+    const { data }: { data: Course[] } = await axios.get(url);
+    return data;
+  } catch (error) {
+    throw new Error("Something went wrong please try again later");
+  }
+}
 const page: FC<PageProps> = async ({ params, searchParams }) => {
   const page = searchParams["page"] ?? "1";
   const perpage = searchParams["perpage"] ?? "15";
-  const url = `https://classechoapi.onrender.com/api/course/getCourses/${params.id}`;
-  const { data }: { data: Course[] } = await axios.get(url);
+  const data = await getCourses(params.id);
   const session = await getServerSession();
   console.log("sessionid=>", session?.user.id);
 
