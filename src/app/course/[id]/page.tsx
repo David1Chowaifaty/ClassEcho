@@ -1,5 +1,4 @@
 import { FC } from "react";
-import axios from "axios";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import BackButton from "@/components/back-button";
@@ -8,11 +7,12 @@ import ClipboardButton from "@/components/course/clipboard-button";
 import { getServerSession } from "next-auth";
 import { cn } from "@/lib/utils";
 import CourseOptions from "@/components/course/course-options";
+import { getCourse } from "@/lib/course";
 
 interface CoursePageProps {
   params: { id: string };
 }
-type Course = {
+export type Course = {
   course_id: number;
   creator: number;
   createdAt: Date | null;
@@ -24,21 +24,14 @@ type Course = {
   material_description: string;
 };
 export async function generateStaticParams() {
-  const { data } = await axios.get(
+  const res = await fetch(
     "https://classechoapi.onrender.com/api/course/getAllCoursesId"
   );
+  const data = await res.json();
   return data.map((course: any) => ({ id: course.toString() }));
 }
 export const revalidate = 3600;
-async function getCourse(id: string) {
-  try {
-    const url = `https://classechoapi.onrender.com/api/course/getSingleCourse/${id}`;
-    const { data }: { data: Course[] } = await axios.get(url);
-    return data;
-  } catch (error) {
-    throw new Error("Something went wrong");
-  }
-}
+
 const CoursePage: FC<CoursePageProps> = async ({ params }) => {
   const data = await getCourse(params.id);
   const ligthColor = ["from-purple-200", "from-green-200", "from-violet-200"];

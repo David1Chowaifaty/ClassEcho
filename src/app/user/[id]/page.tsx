@@ -1,19 +1,19 @@
-import { FC, Suspense } from "react";
-import axios from "axios";
+import { FC } from "react";
 import Link from "next/link";
 import CourseCard from "@/components/course/course-card";
 import CreateCourseButton from "@/components/course/create-course";
 import { getServerSession } from "next-auth";
 import JoinCourse from "@/components/course/join-course";
 import { buttonVariants } from "@/components/ui/button";
-import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons";
-import UserLoading from "@/components/user-loading";
+import { getCourses } from "@/lib/course";
+import axios from "axios";
+import { da } from "date-fns/locale";
 
 interface PageProps {
   params: { id: string };
   searchParams: { [key: string]: string[] | string | undefined };
 }
-type Course = {
+export type CourseCard = {
   course_id: number;
   creator: number;
   createdAt: Date;
@@ -21,40 +21,19 @@ type Course = {
   description: string;
 };
 export async function generateStaticParams() {
-  const { data } = await axios.get(
+  const res = await fetch(
     "https://classechoapi.onrender.com/api/users/GetAllUsersId"
   );
-  const result = data as number[];
-  return result.map((res) => ({ id: res.toString() }));
+  const data: number[] = await res.json();
+  return data.map((res) => ({ id: res.toString() }));
 }
 export const revalidate = 3600;
-async function getCourses(id: string) {
-  try {
-    const url = `https://classechoapi.onrender.com/api/course/getCourses/${id}`;
-    const { data }: { data: Course[] } = await axios.get(url);
-    return data;
-  } catch (error) {
-    throw new Error("Something went wrong please try again later");
-  }
-}
+
 const page: FC<PageProps> = async ({ params, searchParams }) => {
   const page = searchParams["page"] ?? "1";
   const perpage = searchParams["perpage"] ?? "15";
   const data = await getCourses(params.id);
   const session = await getServerSession();
-  console.log("sessionid=>", session?.user.id);
-
-  // async function checkButton() {
-  //   try {
-  //     const { data } = await axios.get(
-  //       "http://localhost:5080/api/auth/testjwt"
-  //     );
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-  // checkButton();
   return (
     <main className="p-4 min-h-[80vh] sm:px-6  pb-8  mt-5  lg:px-10 ">
       {data.length === 0 && (
