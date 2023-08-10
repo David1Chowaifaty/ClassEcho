@@ -2,12 +2,10 @@ import { FC } from "react";
 import Link from "next/link";
 import CourseCard from "@/components/course/course-card";
 import CreateCourseButton from "@/components/course/create-course";
-import { getServerSession } from "next-auth";
 import JoinCourse from "@/components/course/join-course";
 import { buttonVariants } from "@/components/ui/button";
 import { getCourses } from "@/lib/course";
-import axios from "axios";
-import { da } from "date-fns/locale";
+import { getSession } from "@/lib/session";
 
 interface PageProps {
   params: { id: string };
@@ -20,20 +18,12 @@ export type CourseCard = {
   course_name: string;
   description: string;
 };
-export async function generateStaticParams() {
-  const res = await fetch(
-    "https://classechoapi.onrender.com/api/users/GetAllUsersId"
-  );
-  const data: number[] = await res.json();
-  return data.map((res) => ({ id: res.toString() }));
-}
-export const revalidate = 3600;
 
 const page: FC<PageProps> = async ({ params, searchParams }) => {
   const page = searchParams["page"] ?? "1";
   const perpage = searchParams["perpage"] ?? "15";
   const data = await getCourses(params.id);
-  const session = await getServerSession();
+  const session = await getSession();
   return (
     <main className="p-4 min-h-[80vh] sm:px-6  pb-8  mt-5  lg:px-10 ">
       {data.length === 0 && (
@@ -43,11 +33,11 @@ const page: FC<PageProps> = async ({ params, searchParams }) => {
           </p>
           <div className="flex items-center gap-4">
             <CreateCourseButton
-              id={session?.user.name!}
+              id={session?.user.id!}
               className={buttonVariants({ variant: "default" })}
             />
             <JoinCourse
-              id={session?.user.name!}
+              id={session?.user.id!}
               className={buttonVariants({ variant: "outline" })}
             />
           </div>

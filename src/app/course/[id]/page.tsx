@@ -1,13 +1,12 @@
 import { FC } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 import BackButton from "@/components/back-button";
 import AddMaterial from "@/components/course/add-material";
 import ClipboardButton from "@/components/course/clipboard-button";
-import { getServerSession } from "next-auth";
 import { cn } from "@/lib/utils";
 import CourseOptions from "@/components/course/course-options";
 import { getCourse } from "@/lib/course";
+import { getSession } from "@/lib/session";
 
 interface CoursePageProps {
   params: { id: string };
@@ -23,14 +22,6 @@ export type Course = {
   title: string;
   material_description: string;
 };
-export async function generateStaticParams() {
-  const res = await fetch(
-    "https://classechoapi.onrender.com/api/course/getAllCoursesId"
-  );
-  const data = await res.json();
-  return data.map((course: any) => ({ id: course.toString() }));
-}
-export const revalidate = 3600;
 
 const CoursePage: FC<CoursePageProps> = async ({ params }) => {
   const data = await getCourse(params.id);
@@ -43,9 +34,9 @@ const CoursePage: FC<CoursePageProps> = async ({ params }) => {
     "dark:from-violet-950",
     "dark:from-teal-950",
   ];
-  const session = await getServerSession();
+  const session = await getSession();
   const rand = Math.floor(Math.random() * ligthColor.length);
-  console.log(session?.user.id);
+  const admin = session?.user.id?.toString() === data[0].creator.toString();
   return (
     <>
       <main className="px-4 min-h-[80vh] sm:px-6 lg:px-10">
@@ -61,11 +52,9 @@ const CoursePage: FC<CoursePageProps> = async ({ params }) => {
             <CardTitle className="flex items-center justify-between">
               <p>{data[0].course_name}</p>
               <CourseOptions
-                id={session?.user.name!}
+                id={session?.user.id!}
                 course_code={data[0].course_code || ""}
-                admin={
-                  session?.user.name?.toString() === data[0].creator.toString()
-                }
+                admin={admin}
               />
             </CardTitle>
             {data[0].course_code && (
@@ -77,10 +66,7 @@ const CoursePage: FC<CoursePageProps> = async ({ params }) => {
           <CardContent>
             <div className="flex justify-between items-center text-sm">
               <p>{data[0].description}</p>
-              {session?.user.name?.toString() ===
-                data[0].creator.toString() && (
-                <AddMaterial course_id={params.id} />
-              )}
+              {admin && <AddMaterial course_id={params.id} />}
             </div>
           </CardContent>
         </Card>

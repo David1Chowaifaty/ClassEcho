@@ -38,15 +38,6 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ token, session }) {
-      if (token) {
-        session.user.id = token.id;
-        session.user.email = token.email;
-        session.user.image = token.picture;
-      }
-
-      return session;
-    },
     async jwt({ token, user }) {
       const { data } = await axios.post(
         "https://classechoapi.onrender.com/api/auth/jwtlogin",
@@ -60,13 +51,21 @@ export const authOptions: NextAuthOptions = {
         }
         return token;
       }
-
       return {
         id: data.id,
         email: data.email,
         picture: data.profile,
-        name: data.id,
+        name: data.name,
       };
+    },
+    async session({ token, session }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
+      }
+      return session;
     },
   },
 };
