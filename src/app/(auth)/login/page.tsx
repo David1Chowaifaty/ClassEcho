@@ -1,5 +1,5 @@
 import BackButton from "@/components/back-button";
-import LoginForm from "@/components/login-form";
+import LoginForm from "@/components/auth/login-form";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";

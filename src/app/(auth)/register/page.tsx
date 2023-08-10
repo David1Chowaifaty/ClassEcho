@@ -1,5 +1,5 @@
 import BackButton from "@/components/back-button";
-import RegisterForm from "@/components/register-form";
+import RegisterForm from "@/components/auth/register-form";
 import { buttonVariants } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";

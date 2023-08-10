@@ -1,10 +1,10 @@
 import { FC, Suspense } from "react";
 import axios from "axios";
 import Link from "next/link";
-import CourseCard from "@/components/course-card";
-import CreateCourseButton from "@/components/create-course";
+import CourseCard from "@/components/course/course-card";
+import CreateCourseButton from "@/components/course/create-course";
 import { getServerSession } from "next-auth";
-import JoinCourse from "@/components/join-course";
+import JoinCourse from "@/components/course/join-course";
 import { buttonVariants } from "@/components/ui/button";
 import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons";
 import UserLoading from "@/components/user-loading";

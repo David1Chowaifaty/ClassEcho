@@ -9,11 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 export default function CreateCourseButton({
   id,
@@ -26,15 +26,17 @@ export default function CreateCourseButton({
   const [description, setDescription] = useState("");
   const router = useRouter();
   async function addCourse() {
-    const { data } = await axios.post(
-      "https://classechoapi.onrender.com/api/course/addcourse",
-      {
-        name,
-        description,
-        id: id.toString(),
-      }
-    );
-    router.refresh();
+    try {
+      const { data } = await axios.post(
+        "https://classechoapi.onrender.com/api/course/addcourse",
+        {
+          name,
+          description,
+          id: id.toString(),
+        }
+      );
+      router.refresh();
+    } catch (error) {}
   }
   return (
     <Dialog>

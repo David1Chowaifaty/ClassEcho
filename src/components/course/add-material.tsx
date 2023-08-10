@@ -9,10 +9,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { Button, buttonVariants } from "./ui/button";
+} from "../ui/dialog";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Button, buttonVariants } from "../ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 interface AddMaterialProps {

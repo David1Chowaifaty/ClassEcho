@@ -13,8 +13,12 @@ export default function BackButton({
 }) {
   return (
     <div className={cn(classname, "flex items-center gap-5")}>
-      <Link href="/" className={buttonVariants({ variant: "ghost" })}>
+      <Link
+        href="/"
+        className={buttonVariants({ variant: "ghost", size: "icon" })}
+      >
         <ArrowLeftIcon />
+        <p className="sr-only">go back</p>
       </Link>
       <p>{title}</p>
     </div>

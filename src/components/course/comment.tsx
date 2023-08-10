@@ -1,15 +1,15 @@
 "use client";
 import React, { useState } from "react";
-import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
+import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button";
 import {
   CaretDownIcon,
   CaretUpIcon,
   PaperPlaneIcon,
 } from "@radix-ui/react-icons";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import { AnimatePresence } from "framer-motion";
-import ViewComments, { Comment } from "./view-comments";
+import ViewComments, { Comment } from "../view-comments";
 
 export default function Comment() {
   const [comment, setComment] = useState("");

@@ -1,0 +1,16 @@
+ -----For the future
+ 
+ function selectedText(font: string) {
+    let cursorStart = commentRef.current?.selectionStart;
+    let cursorEnd = commentRef.current?.selectionEnd;
+    let selectedText = comment.substring(cursorStart!, cursorEnd);
+    if (selectedText) {
+      const formatted =
+        comment.slice(0, cursorStart) +
+        `<${font}>` +
+        selectedText +
+        `</${font}>` +
+        comment.slice(cursorEnd);
+      setComment(formatted);
+    }
+  }

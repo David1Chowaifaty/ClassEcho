@@ -3,11 +3,11 @@ import axios from "axios";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import BackButton from "@/components/back-button";
-import AddMaterial from "@/components/add-material";
-import ClipboardButton from "@/components/clipboard-button";
+import AddMaterial from "@/components/course/add-material";
+import ClipboardButton from "@/components/course/clipboard-button";
 import { getServerSession } from "next-auth";
 import { cn } from "@/lib/utils";
-import CourseOptions from "@/components/course-options";
+import CourseOptions from "@/components/course/course-options";
 
 interface CoursePageProps {
   params: { id: string };
