@@ -22,7 +22,14 @@ export type Course = {
   title: string;
   material_description: string;
 };
-
+export async function generateStaticParams() {
+  const res = await fetch(
+    "https://classechoapi.onrender.com/api/course/getAllCoursesId"
+  );
+  const data = await res.json();
+  return data.map((course: any) => ({ id: course.toString() }));
+}
+export const revalidate = 3600;
 const CoursePage: FC<CoursePageProps> = async ({ params }) => {
   const data = await getCourse(params.id);
   const ligthColor = ["from-purple-200", "from-green-200", "from-violet-200"];

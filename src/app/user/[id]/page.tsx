@@ -18,7 +18,14 @@ export type CourseCard = {
   course_name: string;
   description: string;
 };
-
+export async function generateStaticParams() {
+  const res = await fetch(
+    "https://classechoapi.onrender.com/api/users/GetAllUsersId"
+  );
+  const data: number[] = await res.json();
+  return data.map((res) => ({ id: res.toString() }));
+}
+export const revalidate = 3600;
 const page: FC<PageProps> = async ({ params, searchParams }) => {
   const page = searchParams["page"] ?? "1";
   const perpage = searchParams["perpage"] ?? "15";
