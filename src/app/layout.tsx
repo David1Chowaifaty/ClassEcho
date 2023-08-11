@@ -5,12 +5,10 @@ import Link from "next/link";
 import AddCourse from "@/components/course/add-course";
 import { buttonVariants } from "@/components/ui/button";
 import Provider from "@/components/Provider";
-import { getServerSession } from "next-auth";
 import { Analytics } from "@vercel/analytics/react";
 import SignOut from "@/components/nav/SignOut";
 const inter = Inter({ subsets: ["latin"] });
 import { ModeToggle } from "@/components/nav/theme-toggle";
-import { authOptions } from "@/lib/auth";
 import { getSession } from "@/lib/session";
 export const metadata = {
   title: "ClassEcho",
