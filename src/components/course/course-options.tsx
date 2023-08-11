@@ -33,6 +33,7 @@ export default function CourseOptions({
   course_code: string;
   id: string;
 }) {
+  console.log(id, admin, course_code);
   const router = useRouter();
   const [students, setStudents] = useState<student[]>();
   const [open, setOpen] = useState(false);
@@ -108,7 +109,7 @@ export default function CourseOptions({
             <DialogContent className="sm:max-w-[425px]">
               <DialogTitle>Enrolled Students</DialogTitle>
               <DialogDescription>
-                {!students ? (
+                {!students || students.length === 0 ? (
                   <p>No one enrolled in this course</p>
                 ) : (
                   students.map((student) => (
