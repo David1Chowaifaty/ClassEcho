@@ -55,7 +55,7 @@ export default async function RootLayout({
               ) : (
                 <ul className="flex items-center gap-4 ">
                   <li>
-                    <AddCourse id={session.user.name!} />
+                    <AddCourse id={session.user.id!} />
                   </li>
                   <li>
                     <ModeToggle />

@@ -78,6 +78,7 @@ export default function CourseOptions({
       .promise(
         axios.post("https://classechoapi.onrender.com/api/course/leaveCourse", {
           id,
+          course_code,
         }),
         {
           error: "Something went wrong",
