@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode="prisma"
+}
+model Users{
+  id Int @id @default(autoincrement())
+  email String @unique
+  password String @db.Text
+  profile String
+  username String @unique
+  course Course[]
+}
+
+model Course{
+  course_id Int @id @default(autoincrement())
+  creator Int 
+  createdAt DateTime
+  course_name String
+  description String @db.Text
+  couse_code String
+  user Users @relation(fields: [creator], references: [id])
+  enrolled Enrollments[]
+  material Material[]
+
+  @@index([creator])
+}
+model Enrollments{
+  id Int @id @default(autoincrement())
+  course_id Int
+  student_id Int
+  enrolled DateTime
+  course_code String
+  course Course @relation(fields: [course_id],references: [course_id])
+
+  @@index([course_id])
+}
+model Material{
+  material_id Int @id @default(autoincrement())
+  title String
+  material_description String @db.Text
+  course_id Int
+  course Course @relation(fields: [course_id],references: [course_id])
+  comment Comment[]
+  uploads uploads[]
+
+  @@index([course_id])
+}
+model Comment{
+  comment_id Int @id @default(autoincrement())
+  user_id Int
+  material_id Int
+  createdAt DateTime
+  message String @db.Text
+  likes Int @default(0)
+  parent_comment_id Int
+  is_flagged Boolean @default(false)
+  material Material @relation(fields: [material_id],references: [material_id])
+  replies Reply[]
+
+  @@index([material_id])
+}
+model Reply{
+  reply_id Int @id @default(autoincrement())
+  user_id Int
+  comment_id Int
+  createdAt DateTime
+  message String @db.Text
+  likes Int @default(0)
+  is_flagged Boolean @default(false)
+  comment Comment @relation(fields: [comment_id],references: [comment_id])
+
+  @@index([comment_id])
+}
+model uploads{
+  upload_id Int @id @default(autoincrement()) 
+  storage_url String @db.Text
+  material_id Int
+  material Material @relation(fields: [material_id],references: [material_id])
+
+  @@index([material_id])
+}
