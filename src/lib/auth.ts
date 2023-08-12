@@ -1,7 +1,9 @@
 import axios from "axios";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import { db } from "./db";
+import { compare } from "bcrypt";
+import { use } from "react";
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
@@ -22,15 +24,17 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         let email = credentials?.email;
         let password = credentials?.password;
-        const { data } = await axios.post(
-          "https://classechoapi.onrender.com/api/auth/login",
-          {
+        const user = await db.users.findFirst({
+          where: {
             email,
-            password,
+          },
+        });
+        if (user) {
+          const match = await compare(password!, user.password);
+          if (!match) {
+            throw new Error("Invalid Password");
           }
-        );
-        if (data) {
-          return data;
+          return { ...user, id: user.id.toString() };
         } else {
           throw new Error("Email doesn't exist");
         }
@@ -39,12 +43,12 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      const { data } = await axios.post(
-        "https://classechoapi.onrender.com/api/auth/jwtlogin",
-        {
-          email: token.email,
-        }
-      );
+      const data = await db.users.findFirst({
+        where: {
+          email: token.email!,
+        },
+      });
+
       if (!data) {
         if (user) {
           token.id = user?.id;
@@ -52,10 +56,10 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
       return {
-        id: data.id,
+        id: data.id.toString(),
         email: data.email,
         picture: data.profile,
-        name: data.name,
+        name: data.username,
       };
     },
     async session({ token, session }) {

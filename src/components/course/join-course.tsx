@@ -26,13 +26,10 @@ export default function JoinCourse({
   const router = useRouter();
 
   async function joinCourse() {
-    const { data } = await axios.post(
-      "https://classechoapi.onrender.com/api/course/joinCourse",
-      {
-        code,
-        id: id.toString(),
-      }
-    );
+    const { data } = await axios.post("/api/course/joinCourse", {
+      course_code: code,
+      id,
+    });
     router.refresh();
   }
   return (

@@ -19,10 +19,10 @@ model Users{
 model Course{
   course_id Int @id @default(autoincrement())
   creator Int 
-  createdAt DateTime
+  createdAt DateTime @default(now())
   course_name String
   description String @db.Text
-  couse_code String
+  course_code String
   user Users @relation(fields: [creator], references: [id])
   enrolled Enrollments[]
   material Material[]
@@ -30,11 +30,10 @@ model Course{
   @@index([creator])
 }
 model Enrollments{
-  id Int @id @default(autoincrement())
+  enrollment_id Int @id @default(autoincrement())
   course_id Int
   student_id Int
-  enrolled DateTime
-  course_code String
+  enrolledAt DateTime @default(now())
   course Course @relation(fields: [course_id],references: [course_id])
 
   @@index([course_id])

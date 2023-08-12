@@ -12,6 +12,7 @@ import { signIn } from "next-auth/react";
 type FormError = {
   email?: string;
   password?: string;
+  username?: string;
   generic?: string;
 };
 export default function RegisterForm() {
@@ -19,7 +20,7 @@ export default function RegisterForm() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState<FormError | null>(null);
-
+  const [username, setUsername] = useState("");
   const params = useSearchParams();
   const error = params?.get("error");
   useEffect(() => {
@@ -44,14 +45,11 @@ export default function RegisterForm() {
             "Invalid Password. Password must contain numbers and special characters!",
         });
       }
-
-      const { data } = await axios.post(
-        "https://classechoapi.onrender.com/api/auth/register",
-        {
-          email,
-          password,
-        }
-      );
+      const { data } = await axios.post("/api/auth/signup", {
+        email,
+        password,
+        username,
+      });
       const res = await signIn("credentials", { email, password });
     } catch (error: any) {
       console.log(error);
@@ -70,7 +68,19 @@ export default function RegisterForm() {
           </AlertDescription>
         </Alert>
       )}
-
+      <Input
+        onFocus={() => setFormError(null)}
+        placeholder="Username"
+        className={cn(
+          "max-w-lg transition-all duration-300",
+          (formError?.username || formError?.generic) &&
+            "border-red-500/50 dark:border-red-500"
+        )}
+        value={username}
+        onChange={(e) => {
+          setUsername(e.target.value);
+        }}
+      />
       <Input
         onFocus={() => setFormError(null)}
         placeholder="Email"

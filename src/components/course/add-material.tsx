@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { PlusIcon } from "@radix-ui/react-icons";
 import {
   Dialog,
@@ -15,22 +15,60 @@ import { Textarea } from "../ui/textarea";
 import { Button, buttonVariants } from "../ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { MultiUploader } from "../upload-image";
+import { UploadFileResponse } from "uploadthing/client";
+import { useUploadThing } from "@/lib/uploadthing";
+import toast from "react-hot-toast";
+
 interface AddMaterialProps {
   course_id: string;
 }
 export default function AddMaterial({ course_id }: AddMaterialProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+  const { startUpload } = useUploadThing("imageUploader", {
+    onClientUploadComplete: () => {},
+    onUploadError: () => {
+      alert("error occurred while uploading");
+    },
+  });
   const router = useRouter();
   async function handleAddMaterial() {
-    const { data } = await axios.post(
-      "https://classechoapi.onrender.com/api/course/addMaterial",
-      {
-        course_id,
-        title,
-        description,
-      }
-    );
+    let urls: UploadFileResponse[] | undefined;
+    if (files) {
+      urls = await startUpload(files);
+    }
+    if (urls) {
+      toast.promise(
+        axios.post("/api/material/addMaterial", {
+          course_id,
+          title,
+          description,
+          url: urls[0].url,
+        }),
+        {
+          error: "Opps something went wrong!",
+          loading: "Creating your Material.",
+          success: "Material have been added sucessfully",
+        },
+        { position: "bottom-right" }
+      );
+    } else {
+      toast.promise(
+        axios.post("/api/material/addMaterial", {
+          course_id,
+          title,
+          description,
+        }),
+        {
+          error: "Opps something went wrong!",
+          loading: "Creating your Material.",
+          success: "Material have been added sucessfully",
+        },
+        { position: "bottom-right" }
+      );
+    }
     setTitle("");
     setDescription("");
     router.refresh();
@@ -45,53 +83,36 @@ export default function AddMaterial({ course_id }: AddMaterialProps) {
         <DialogHeader>
           <DialogTitle>Add Your Material</DialogTitle>
         </DialogHeader>
-        <DialogDescription className="gap-4 flex-col flex">
-          <Input
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
-          />
-          <Textarea
-            placeholder="Description"
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <p>Upload photos or documents here</p>
+        <DialogDescription>
+          <div className="gap-4 max-h-[70vh] flex-col flex overflow-y-auto">
+            <Input
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Title"
+              className="h-10"
+            />
+            <Textarea
+              placeholder="Description"
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <p>Upload photos or documents here</p>
 
-          <div className="flex items-center justify-center w-full">
-            <label
-              htmlFor="dropzone-file"
-              className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-            >
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                <svg
-                  className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 16"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                  />
-                </svg>
-                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                  <span className="font-semibold">Click to upload</span> or drag
-                  and drop
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  SVG, PNG, JPG or GIF (MAX. 800x400px)
-                </p>
-              </div>
-              <input id="dropzone-file" type="file" className="hidden" />
-            </label>
+            <MultiUploader onDropImage={setFiles} />
           </div>
         </DialogDescription>
         <DialogFooter>
           <DialogTrigger asChild>
-            <Button onClick={() => handleAddMaterial()}>Add</Button>
+            <Button
+              onClick={() => handleAddMaterial()}
+              type="button"
+              variant={"secondary"}
+            >
+              Discard
+            </Button>
+          </DialogTrigger>
+          <DialogTrigger asChild>
+            <Button onClick={() => handleAddMaterial()} type="button">
+              Add
+            </Button>
           </DialogTrigger>
         </DialogFooter>
       </DialogContent>
