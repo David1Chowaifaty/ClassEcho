@@ -9,17 +9,14 @@ export async function GET(req: Request) {
     const course_id = scheme.parse(id);
     const students = await db.users.findMany({
       where: {
-        course: {
-          every: {
-            enrolled: {
-              some: {
-                course_id,
-              },
-            },
+        enrollements: {
+          some: {
+            course_id,
           },
         },
       },
     });
+    console.log(students);
     if (students.length > 0) {
       const enrolledStudents = await db.enrollments.findMany({
         where: {
@@ -34,15 +31,23 @@ export async function GET(req: Request) {
         },
         select: {
           enrollment_id: true,
+          student_id: true,
         },
       });
-
+      console.log(
+        students.map((student) => ({
+          ...student,
+          enrollment_id: enrolledStudents.find(
+            (es) => es.student_id === student.id
+          )?.enrollment_id,
+        }))
+      );
       return new Response(
         JSON.stringify(
           students.map((student) => ({
             ...student,
             enrollment_id: enrolledStudents.find(
-              (es) => es.enrollment_id === student.id
+              (es) => es.student_id === student.id
             )?.enrollment_id,
           }))
         )

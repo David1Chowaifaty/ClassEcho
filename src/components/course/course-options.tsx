@@ -35,7 +35,6 @@ export default function CourseOptions({
   course_id: string;
   id: string;
 }) {
-  console.log(id, admin, course_code);
   const router = useRouter();
   const [students, setStudents] = useState<Student[]>();
   const [open, setOpen] = useState(false);
@@ -72,7 +71,7 @@ export default function CourseOptions({
   async function deleteStudent(enrollment_id: number, email: string) {
     setOpen(false);
     toast.promise(
-      axios.post(`/api/student/removeStudent`, {
+      axios.post(`/api/students/removeStudent`, {
         enrollment_id,
       }),
       {

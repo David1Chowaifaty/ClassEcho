@@ -14,6 +14,7 @@ model Users{
   profile String
   username String @unique
   course Course[]
+  enrollements Enrollments[]
 }
 
 model Course{
@@ -35,8 +36,9 @@ model Enrollments{
   student_id Int
   enrolledAt DateTime @default(now())
   course Course @relation(fields: [course_id],references: [course_id])
-
+  student Users @relation(fields: [student_id],references: [id])
   @@index([course_id])
+  @@index([student_id])
 }
 model Material{
   material_id Int @id @default(autoincrement())
