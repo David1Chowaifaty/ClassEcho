@@ -50,7 +50,7 @@ export default function AddMaterial({ course_id }: AddMaterialProps) {
         {
           error: "Opps something went wrong!",
           loading: "Creating your Material.",
-          success: "Material have been added sucessfully",
+          success: "Material have been added successfully",
         },
         { position: "bottom-right" }
       );
@@ -64,7 +64,7 @@ export default function AddMaterial({ course_id }: AddMaterialProps) {
         {
           error: "Opps something went wrong!",
           loading: "Creating your Material.",
-          success: "Material have been added sucessfully",
+          success: "Material have been added successfully",
         },
         { position: "bottom-right" }
       );

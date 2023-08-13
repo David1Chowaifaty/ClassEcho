@@ -61,6 +61,7 @@ const CoursePage: FC<CoursePageProps> = async ({ params }) => {
                 id={session?.user.id!}
                 course_code={data.course_code || ""}
                 admin={admin}
+                course_id={params.id}
               />
             </CardTitle>
             {data.course_code && (
@@ -88,7 +89,7 @@ const CoursePage: FC<CoursePageProps> = async ({ params }) => {
               <Card className="mt-5" key={material.material_id}>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
-                    <p>{material.title}</p>
+                    {material.title}
                     {/* <CourseOptions
                       id={session?.user.name!}
                       course_code={data[0].course_code || ""}
@@ -102,15 +103,20 @@ const CoursePage: FC<CoursePageProps> = async ({ params }) => {
                 <CardContent>
                   <div className="flex flex-col justify-between gap-5">
                     <p>{material.material_description}</p>
+
                     {material.uploads?.map((img) => (
-                      <Image
-                        height={500}
-                        width={500}
+                      <div
                         key={img.upload_id}
-                        src={img.storage_url}
-                        alt=""
-                        className="max-h-96 w-full rounded-lg"
-                      />
+                        className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md  group-hover:opacity-75 sm:aspect-none sm:h-80"
+                      >
+                        <Image
+                          src={img.storage_url}
+                          alt=""
+                          height={500}
+                          width={500}
+                          className="h-full w-full object-cover object-center"
+                        />
+                      </div>
                     ))}
                   </div>
                 </CardContent>

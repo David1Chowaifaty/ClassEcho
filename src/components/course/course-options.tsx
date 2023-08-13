@@ -27,10 +27,12 @@ type student = {
 export default function CourseOptions({
   admin,
   course_code,
+  course_id,
   id,
 }: {
   admin: boolean;
   course_code: string;
+  course_id: string;
   id: string;
 }) {
   console.log(id, admin, course_code);
@@ -45,13 +47,13 @@ export default function CourseOptions({
   async function deleteCourse() {
     toast
       .promise(
-        axios.delete(
-          `https://classechoapi.onrender.com/api/course/deleteCourse/${course_code}`
-        ),
+        axios.post(`/api/course/deleteCourse`, {
+          course_id,
+        }),
         {
           error: "Something went wrong",
           loading: "Loading",
-          success: `This course have been removed from your course`,
+          success: `This course have been removed successfully`,
         },
         { position: "bottom-right" }
       )
@@ -95,6 +97,7 @@ export default function CourseOptions({
     <DropdownMenu>
       <DropdownMenuTrigger>
         <DotsVerticalIcon />
+        <p className="sr-only">options</p>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
