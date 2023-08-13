@@ -19,11 +19,11 @@ import { useRouter } from "next/navigation";
 import { DotsVerticalIcon, TrashIcon } from "@radix-ui/react-icons";
 import { toast } from "react-hot-toast";
 import CustomAlert from "../custom-alert";
-type student = {
-  email: string;
-  profile: string | null;
+import { Users } from "@prisma/client";
+import Spinner from "../ui/spinner";
+interface Student extends Users {
   enrollment_id: number;
-};
+}
 export default function CourseOptions({
   admin,
   course_code,
@@ -37,12 +37,20 @@ export default function CourseOptions({
 }) {
   console.log(id, admin, course_code);
   const router = useRouter();
-  const [students, setStudents] = useState<student[]>();
+  const [students, setStudents] = useState<Student[]>();
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   async function getEnrolledStudents() {
-    const url = `https://classechoapi.onrender.com/api/course/getEnrolledStudents/${course_code}`;
-    const { data } = await axios.get(url);
-    setStudents(data);
+    try {
+      setIsLoading(true);
+      setStudents([]);
+      const { data } = await axios.get(`/api/students/${course_id}`);
+      if (data) setStudents(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
   async function deleteCourse() {
     toast
@@ -64,9 +72,9 @@ export default function CourseOptions({
   async function deleteStudent(enrollment_id: number, email: string) {
     setOpen(false);
     toast.promise(
-      axios.delete(
-        `https://classechoapi.onrender.com/api/course/removeEnrolledStudent/${enrollment_id}`
-      ),
+      axios.post(`/api/student/removeStudent`, {
+        enrollment_id,
+      }),
       {
         error: "Something went wrong",
         loading: "Loading",
@@ -112,29 +120,44 @@ export default function CourseOptions({
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogTitle>Enrolled Students</DialogTitle>
-              <DialogDescription>
-                {!students || students.length === 0 ? (
+              <DialogDescription className="flex flex-col">
+                {isLoading && <Spinner className="self-center" />}
+                {(!students || students.length === 0) && !isLoading ? (
                   <p>No one enrolled in this course</p>
                 ) : (
-                  students.map((student) => (
-                    <div
-                      key={student.enrollment_id}
-                      className="py-3 w-full border-b flex items-center justify-between"
-                    >
-                      <p>{student.email}</p>
-                      {admin && (
-                        <CustomAlert
-                          handleClick={() =>
-                            deleteStudent(student.enrollment_id, student.email)
-                          }
-                          triggerContent={
-                            <TrashIcon className="text-red-900 dark:text-red-500" />
-                          }
-                          className="p-1.5 rounded-md hover:bg-slate-100/50 dark:hover:bg-slate-900"
-                        />
-                      )}
-                    </div>
-                  ))
+                  students &&
+                  students.map((student) => {
+                    if (student.id !== parseInt(id)) {
+                      return (
+                        <div
+                          key={student.id}
+                          className="py-3 w-full border-b flex items-center justify-between"
+                        >
+                          <p>{student.email}</p>
+                          {admin && (
+                            <CustomAlert
+                              handleClick={() =>
+                                deleteStudent(
+                                  student.enrollment_id,
+                                  student.email
+                                )
+                              }
+                              triggerContent={
+                                <TrashIcon className="text-red-900 dark:text-red-500" />
+                              }
+                              className="p-1.5 rounded-md hover:bg-slate-100/50 dark:hover:bg-slate-900"
+                            />
+                          )}
+                        </div>
+                      );
+                    } else {
+                      if (students.length === 1) {
+                        return (
+                          <p key={student.id}>No one enrolled in this course</p>
+                        );
+                      }
+                    }
+                  })
                 )}
               </DialogDescription>
             </DialogContent>

@@ -71,8 +71,10 @@ const CoursePage: FC<CoursePageProps> = async ({ params }) => {
             )}
           </CardHeader>
           <CardContent>
-            <div className="flex justify-between items-center text-sm">
-              <p>{data.description}</p>
+            <div className="flex flex-col gap-3 md:flex-row justify-between items-center text-sm">
+              <p className="max-w-md text-center md:text-left">
+                {data.description}
+              </p>
               {admin && <AddMaterial course_id={params.id} />}
             </div>
           </CardContent>
