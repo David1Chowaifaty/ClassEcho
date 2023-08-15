@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Sheet,
@@ -15,10 +16,13 @@ import SignOut from "./nav/SignOut";
 import { ModeToggle } from "./nav/theme-toggle";
 import CreateCourseButton from "./course/create-course";
 import JoinCourse from "./course/join-course";
+import { Switch } from "./ui/switch";
+import { useTheme } from "next-themes";
 interface MenuProps extends User {
   id: string;
 }
 export default function Menu({ id, email, image, name }: MenuProps) {
+  const { setTheme, systemTheme, theme } = useTheme();
   return (
     <Sheet>
       <SheetTrigger
@@ -57,6 +61,20 @@ export default function Menu({ id, email, image, name }: MenuProps) {
               <JoinCourse
                 id={id}
                 className="w-full text-start dark:text-slate-300"
+              />
+            </li>
+            <li className="flex items-center w-full justify-between">
+              Switch to{" "}
+              {(theme === "system" && systemTheme === "dark") ||
+              theme === "dark"
+                ? "light"
+                : "dark"}
+              <Switch
+                checked={
+                  (theme === "system" && systemTheme === "dark") ||
+                  theme === "dark"
+                }
+                onCheckedChange={(e) => setTheme(e ? "dark" : "light")}
               />
             </li>
             <li className="flex mt-10 items-center w-full">
