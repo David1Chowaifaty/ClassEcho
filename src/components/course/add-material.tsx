@@ -84,7 +84,7 @@ export default function AddMaterial({ course_id }: AddMaterialProps) {
           <DialogTitle>Add Your Material</DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          <div className="gap-4 max-h-[70vh] flex-col flex overflow-y-auto">
+          <form className="gap-4 max-h-[70vh] flex-col flex overflow-y-auto">
             <Input
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Title"
@@ -97,13 +97,17 @@ export default function AddMaterial({ course_id }: AddMaterialProps) {
             <p>Upload photos or documents here</p>
 
             <MultiUploader onDropImage={setFiles} />
-          </div>
+          </form>
         </DialogDescription>
         <DialogFooter>
-          <DialogTrigger asChild>
+          <DialogTrigger asChild className="mt-4 sm:mt-0">
             <Button
-              onClick={() => handleAddMaterial()}
-              type="button"
+              onClick={() => {
+                setDescription("");
+                setTitle("");
+                setFiles([]);
+              }}
+              type="reset"
               variant={"secondary"}
             >
               Discard

@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextIndex","fullTextSearch"]
 }
 
 datasource db {
@@ -27,8 +28,19 @@ model Course{
   user Users @relation(fields: [creator], references: [id])
   enrolled Enrollments[]
   material Material[]
+  tags Tags[]
 
   @@index([creator])
+  @@fulltext([course_name, description])
+}
+model Tags{
+  tag_id Int @id @default(autoincrement())
+  tag String
+  course_id Int
+  course Course @relation(fields: [course_id],references: [course_id])
+
+  @@index([course_id])
+  @@fulltext([tag])
 }
 model Enrollments{
   enrollment_id Int @id @default(autoincrement())
