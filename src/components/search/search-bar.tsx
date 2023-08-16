@@ -18,24 +18,22 @@ export default function SearchBar() {
   const [results, setResults] = useState<Course[]>([]);
   const [recentSearchs, setRecentSearchs] = useState<Course[]>([]);
   const [trendingTopics, setTrendingTopic] = useState<Tags[]>([]);
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const [tagsResult, recentSearchResult] = await Promise.all([
-  //         axios.get("/api/getTags"),
-  //         axios.get("/api/getRecentSearch"),
-  //       ]);
-  //       if (tagsResult) {
-  //         setTrendingTopic(tagsResult.data);
-  //       }
-  //       if (recentSearchResult) {
-  //         setRecentSearchs(recentSearchResult.data);
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   })();
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      try {
+        const tagsResult = await axios.get("/api/getTags");
+        if (tagsResult) {
+          setTrendingTopic(tagsResult.data);
+        }
+        const recentSearchResult = localStorage.getItem("recentSearchResults");
+        if (recentSearchResult) {
+          setRecentSearchs(JSON.parse(recentSearchResult));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
   useEffect(() => {
     (async () => {
       try {
@@ -66,7 +64,7 @@ export default function SearchBar() {
             <input
               type="text"
               placeholder="search..."
-              className="bg-transparent flex-1 px-2 focus:outline-none"
+              className="hidden md:block bg-transparent flex-1 px-2 focus:outline-none"
             />
           </div>
         </DialogTrigger>

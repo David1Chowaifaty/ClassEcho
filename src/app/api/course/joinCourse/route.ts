@@ -1,8 +1,13 @@
 import { db } from "@/lib/db";
+import { getSession } from "@/lib/session";
 import { ZodError, z } from "zod";
 
 export async function POST(req: Request) {
   try {
+    const session = await getSession();
+    if (!session?.user) {
+      return new Response("Unauthorized", { status: 401 });
+    }
     const scheme = z.object({
       id: z.coerce.number(),
       course_code: z.string(),

@@ -28,18 +28,18 @@ model Course{
   user Users @relation(fields: [creator], references: [id])
   enrolled Enrollments[]
   material Material[]
-  tags Tags[]
+  tag_id  Int?
+  tags Tags? @relation(fields: [tag_id],references: [tag_id])
 
   @@index([creator])
   @@fulltext([course_name, description])
+  @@index([tag_id])
 }
 model Tags{
   tag_id Int @id @default(autoincrement())
   tag String
-  course_id Int
-  course Course @relation(fields: [course_id],references: [course_id])
-
-  @@index([course_id])
+  course_id Int?
+  course Course[]
   @@fulltext([tag])
 }
 model Enrollments{

@@ -1,8 +1,13 @@
 import { db } from "@/lib/db";
+import { getSession } from "@/lib/session";
 import { z } from "zod";
 
 export async function GET(req: Request) {
   try {
+    const session = await getSession();
+    if (!session?.user) {
+      return new Response("Unauthorized", { status: 401 });
+    }
     const tab = req.url.split("/");
     const id = tab[tab.length - 1];
     const scheme = z.coerce.number();

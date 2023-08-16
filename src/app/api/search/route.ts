@@ -8,33 +8,49 @@ export async function POST(req: Request) {
       return new Response("UnAuthorized", { status: 401 });
     }
     const { debouncedValue } = await req.json();
-    const results = await db.course.findMany({
-      where: {
-        OR: [
-          {
-            description: {
-              search: debouncedValue,
-            },
-          },
-          {
-            course_name: {
-              search: debouncedValue,
-            },
-          },
-          {
-            tags: {
-              some: {
-                tag: {
-                  search: debouncedValue,
-                },
+    const tags = await db.tags.findFirst({ where: { tag: debouncedValue } });
+    if (tags) {
+      const results = await db.course.findMany({
+        where: {
+          OR: [
+            {
+              description: {
+                search: debouncedValue,
               },
             },
-          },
-        ],
-      },
-    });
-    console.log(results);
-    return new Response(JSON.stringify(results));
+            {
+              course_name: {
+                search: debouncedValue,
+              },
+            },
+            {
+              tag_id: tags.tag_id,
+            },
+          ],
+        },
+      });
+      console.log(results);
+      return new Response(JSON.stringify(results));
+    } else {
+      const results = await db.course.findMany({
+        where: {
+          OR: [
+            {
+              description: {
+                search: debouncedValue,
+              },
+            },
+            {
+              course_name: {
+                search: debouncedValue,
+              },
+            },
+          ],
+        },
+      });
+      console.log(results);
+      return new Response(JSON.stringify(results));
+    }
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify(error), { status: 500 });
