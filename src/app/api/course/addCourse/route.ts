@@ -31,7 +31,6 @@ async function createCourse(
 }
 
 async function createTagIfNotExist(tag: string) {
-  let tag_id;
   const tagResult = await db.tags.findFirst({
     where: {
       tag,
@@ -44,12 +43,10 @@ async function createTagIfNotExist(tag: string) {
         tag,
       },
     });
-    tag_id = createdTag.course_id;
+    return createdTag.course_id;
   } else {
-    tag_id = tagResult.tag_id;
+    return tagResult.tag_id;
   }
-
-  return tag_id;
 }
 
 export async function POST(req: Request) {
@@ -68,13 +65,13 @@ export async function POST(req: Request) {
     const requestData = await req.json();
     const { tag, name, id, description } = scheme.parse(requestData);
 
-    let tag_id: number | null = null;
     if (tag) {
-      tag_id = await createTagIfNotExist(tag);
+      let tag_id = await createTagIfNotExist(tag);
       const course = await createCourse(name, id, description, tag_id);
       return new Response(JSON.stringify(course));
     } else {
-      const course = await createCourse(name, id, description, tag_id);
+      console.log("tag doesn't exist");
+      const course = await createCourse(name, id, description, null);
       return new Response(JSON.stringify(course));
     }
   } catch (error) {

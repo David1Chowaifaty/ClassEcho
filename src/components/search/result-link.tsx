@@ -13,6 +13,7 @@ import {
 import { Button, buttonVariants } from "../ui/button";
 import axios from "axios";
 import { enrolledStudent } from "./search-bar";
+import { useRouter } from "next/navigation";
 
 interface LinkProps extends Course {
   enrolledStudents: enrolledStudent[];
@@ -23,15 +24,19 @@ export function ResultLink({
   course_name,
   description,
   enrolledStudents,
+  course_code,
   id,
 }: LinkProps) {
+  const router = useRouter();
   const joinCourse = useCallback(async () => {
     try {
-      await axios.post("/api/joinCourse", { id, course_id });
+      await axios.post("/api/course/joinCourse", { id, course_code });
     } catch (error) {
       console.log(error);
+    } finally {
+      router.refresh();
     }
-  }, [course_id, id]);
+  }, [course_code, id, router]);
   return (
     <Dialog>
       <DialogTrigger className="py-1.5 px-3 flex items-center justify-between text-sm rounded-md hover:bg-gray-100 dark:hover:bg-slate-900 w-full">

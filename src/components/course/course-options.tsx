@@ -85,9 +85,8 @@ export default function CourseOptions({
   async function leaveCourse() {
     toast
       .promise(
-        axios.post("https://classechoapi.onrender.com/api/course/leaveCourse", {
-          id,
-          course_code,
+        axios.post("/api/course/leaveCourse", {
+          course_id,
         }),
         {
           error: "Something went wrong",
