@@ -61,7 +61,7 @@ export default async function RootLayout({
               ) : (
                 <ul className="flex items-center justify-end w-full gap-4">
                   <li className="ml-2 lg:ml-0">
-                    <SearchBar />
+                    <SearchBar id={parseInt(session.user.id)} />
                   </li>
                   <li className="hidden lg:block">
                     <AddCourse id={session.user.id!} />

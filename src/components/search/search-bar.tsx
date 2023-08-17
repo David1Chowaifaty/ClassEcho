@@ -12,10 +12,18 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { RecentSearchLink, ResultLink } from "./result-link";
-export default function SearchBar() {
+export type enrolledStudent = {
+  course_id: number;
+  enrollment_id: number;
+  student_id: number;
+};
+interface SearchResult extends Course {
+  enrolledStudents: enrolledStudent[];
+}
+export default function SearchBar({ id }: { id: number }) {
   const [searchResult, setSearchResult] = useState("");
   const debouncedValue = useDebounce(searchResult, 500);
-  const [results, setResults] = useState<Course[]>([]);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [recentSearchs, setRecentSearchs] = useState<Course[]>([]);
   const [trendingTopics, setTrendingTopic] = useState<Tags[]>([]);
   useEffect(() => {
@@ -96,7 +104,7 @@ export default function SearchBar() {
             <>
               <h2 className="font-medium text-lg">Results</h2>
               {results?.map((result) => (
-                <ResultLink key={result.course_id} {...result} />
+                <ResultLink id={id} key={result.course_id} {...result} />
               ))}
               <span className="block h-[1px] bg-gray-100 w-full rounded-sm " />
             </>
@@ -113,7 +121,7 @@ export default function SearchBar() {
               </Button>
             ))}
           </div>
-          {recentSearchs.length > 0 && (
+          {/* {recentSearchs.length > 0 && (
             <>
               <span className="block h-[1px] bg-gray-100 w-full rounded-sm " />
               <h2 className="font-medium text-lg">Recent Search</h2>
@@ -126,7 +134,7 @@ export default function SearchBar() {
                 ))}
               </div>
             </>
-          )}
+          )} */}
         </DialogContent>
       </Dialog>
     </>

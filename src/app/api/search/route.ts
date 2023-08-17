@@ -29,8 +29,27 @@ export async function POST(req: Request) {
           ],
         },
       });
+      const countEnrolledStudent = await db.enrollments.findMany({
+        where: {
+          course_id: {
+            in: results.map((result) => result.course_id),
+          },
+        },
+        select: {
+          course_id: true,
+          enrollment_id: true,
+          student_id: true,
+        },
+      });
       console.log(results);
-      return new Response(JSON.stringify(results));
+      return new Response(
+        JSON.stringify(
+          results.map((result) => ({
+            ...result,
+            enrolledStudents: countEnrolledStudent,
+          }))
+        )
+      );
     } else {
       const results = await db.course.findMany({
         where: {
@@ -48,8 +67,27 @@ export async function POST(req: Request) {
           ],
         },
       });
+      const countEnrolledStudent = await db.enrollments.findMany({
+        where: {
+          course_id: {
+            in: results.map((result) => result.course_id),
+          },
+        },
+        select: {
+          course_id: true,
+          enrollment_id: true,
+          student_id: true,
+        },
+      });
       console.log(results);
-      return new Response(JSON.stringify(results));
+      return new Response(
+        JSON.stringify(
+          results.map((result) => ({
+            ...result,
+            enrolledStudents: countEnrolledStudent,
+          }))
+        )
+      );
     }
   } catch (error) {
     console.log(error);
