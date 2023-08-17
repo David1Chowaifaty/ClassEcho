@@ -1,3 +1,4 @@
+import { ta } from "date-fns/locale";
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/session";
 import { ZodError, z } from "zod";
@@ -64,15 +65,25 @@ export async function POST(req: Request) {
 
     const requestData = await req.json();
     const { tag, name, id, description } = scheme.parse(requestData);
-
     if (tag) {
-      let tag_id = await createTagIfNotExist(tag);
-      const course = await createCourse(name, id, description, tag_id);
-      return new Response(JSON.stringify(course));
-    } else {
-      console.log("tag doesn't exist");
-      const course = await createCourse(name, id, description, null);
-      return new Response(JSON.stringify(course));
+      const tagExist = await db.tags.findFirst({ where: { tag } });
+      if (!tagExist) {
+        const newTag = await db.tags.create({
+          data: {
+            tag,
+          },
+        });
+        const course = await createCourse(name, id, description, newTag.tag_id);
+        return new Response(JSON.stringify(course));
+      } else {
+        const course = await createCourse(
+          name,
+          id,
+          description,
+          tagExist.tag_id
+        );
+        return new Response(JSON.stringify(course));
+      }
     }
   } catch (error) {
     if (error instanceof ZodError) {
